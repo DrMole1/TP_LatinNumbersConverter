@@ -1,0 +1,406 @@
+Algorithme : RomainToEntier
+// BUT : Cet algorithme convertit un chiffre romain en sa valeur décimale entière, ou l'inverse. 
+// ENTREE : Un nombre romain en chaine de caractères OU un entier décimal.
+// SORTIE : Un entier décimal OU un nombre romain en chaine de caractères.
+// PRINCIPE :
+// 1) L'utilisateur décide quel sous programme il veut utiliser avec un menu (en C, cela renverra dans un sous programme).
+// 2) On vérifie la chaîne saisie par l'utilisateur pour qu'il n'y ait pas d'erreur ensuite OU on regarde s'il saisit une valeur entière correcte. 
+// 3) On ajoute ou soustrait progressivement notre valeur par ré-affectation en fonction de notre chaine de caractères.
+// 4) La valeur doit être comprise entre 1 et 3999 et la chaine ne doit pas dépasser les 21 caractères.
+
+CONST
+	
+	M1 <- 900 : ENTIER
+	M2 <- 950 : ENTIER
+	M3 <- 990 : ENTIER
+	M4 <- 995 : ENTIER
+	M5 <- 999 : ENTIER
+	D1 <- 400 : ENTIER
+	D2 <- 450 : ENTIER
+	D3 <- 490 : ENTIER
+	D4 <- 495 : ENTIER
+	D5 <- 499 : ENTIER
+	C1 <- 90 : ENTIER
+	C2 <- 95 : ENTIER
+	C3 <- 99 : ENTIER
+	L1 <- 40 : ENTIER
+	L2 <- 45 : ENTIER
+	L3 <- 49 : ENTIER
+	X1 <- 9 : ENTIER
+	V1 <- 4 : ENTIER
+	MIN <- 1 : ENTIER
+	MAX <- 3999 : ENTIER
+	M <- 1000 : ENTIER
+	D <- 500 : ENTIER
+	C <- 100 : ENTIER
+	L <- 50 : ENTIER
+	X <- 10 : ENTIER
+	V <- 5 : ENTIER
+	I <- 1 : ENTIER
+	MAXCAR <- 21 : ENTIER
+
+
+FONCTION verifRomain (rom : CHAINE) : BOOLEEN
+// fonction qui vérifie, lors du programme 2, si les caractères saisis ne sont pas différents de M, D, C, L, X, V et I
+	VAR
+		cpt : ENTIER //compteur, variable locale à la fonction
+		verif : BOOLEEN //variable temporaire
+	DEBUT
+		verif <- VRAI  //il est déjà initialisé à VRAI en algo, mais il faudra l'initialiser en C
+		POUR cpt DE MIN A LONGUEUR(rom) FAIRE
+			SI (verif) ALORS
+				verif <- ((EXTRACTION(rom, cpt) = 'M') OU (EXTRACTION(rom, cpt) = 'D') OU (EXTRACTION(rom, cpt) = 'C') OU (EXTRACTION(rom, cpt) = 'L') OU (EXTRACTION(rom, cpt) = 'X') OU (EXTRACTION(rom, cpt) = 'V') OU (EXTRACTION(rom, cpt) = 'I'))
+			FIN SI
+		FIN POUR
+		verifRomain <- verif
+	FIN FONCTION
+
+
+
+
+VAR
+	rom : CHAINE
+	valeur, menu, cpt : ENTIER
+
+
+DEBUT //programme principal (MAIN)
+
+//initialisation des variables
+rom <- ''
+valeur <- 0
+menu <- 0
+cpt <- 0 //varibale utile au 2e sous-programme
+
+ECRIRE 'Programme des chiffres romains'
+ECRIRE 'Tapez 1 : chiffre decimal -> chiffre romain'
+ECRIRE 'Tapez 2 : chiffre romain -> chiffre décimal'
+ECRIRE 'Tapez un autre chiffre pour fermer le programme'
+ECRIRE 'Attention, les valeurs sont comprises entre 1 et 3999'
+
+LIRE menu
+
+
+
+//chiffre décimal -> chiffre romain
+SI (menu = 1) ALORS
+	
+	// boucle de saisie : l'utilisateur ne pourra pas écrire une valeur invalide !
+	REPETER
+		ECRIRE 'Veuillez saisir un entier décimal'
+		LIRE valeur
+		SI ((valeur < MIN) OU (valeur > MAX)) ALORS
+			ECRIRE 'Votre valeur doit etre comprise entre 1 et 3999'
+		FIN SI
+	JUSQU'A ((valeur >= MIN) ET (valeur <= MAX))
+
+
+	// traitement des milliers 
+	// on utilise une boucle TANT QUE car nous ne sommes pas obligé de passer ici (si valeur = 766 et 766 < 1000)
+	TANT QUE (valeur >= M)
+		rom <- rom + 'M'   // on concatène la chaine
+		valeur <- valeur - M  // on soustrait la valeur saisie par son représentant en chiffre romain
+	FIN TANT QUE
+
+	// traitement des soustractions avant les milliers
+	SI (valeur >= M5) ALORS
+		rom <- rom + 'IM'
+		valeur <- valeur - M5
+	SINON
+		SI (valeur >= M4) ALORS
+			rom <- rom + 'VM'
+			valeur <- valeur - M4
+		SINON
+			SI (valeur >= M3) ALORS
+				rom <- rom + 'XM'
+				valeur <- valeur - M3
+			SINON
+				SI (valeur >= M2) ALORS
+					rom <- rom + 'LM'
+					valeur <- valeur - M2
+				SINON
+					SI (valeur >= M1) ALORS
+						rom <- rom + 'CM'
+						valeur <- valeur - M1
+					FIN SI
+				FIN SI
+			FIN SI
+		FIN SI
+	FIN SI
+
+
+	// traitement du 500
+	SI (valeur >= D) ALORS  
+		rom <- rom + 'D'
+		valeur <- valeur - D
+	FIN SI
+
+	// traitement des soustractions avant le 500
+	SI (valeur >= D5) ALORS  
+		rom <- rom + 'ID'
+		valeur <- valeur - D5
+	SINON
+		SI (valeur >= D4) ALORS
+			rom <- rom + 'VD'
+			valeur <- valeur - D4
+		SINON
+			SI (valeur >= D3) ALORS
+				rom <- rom + 'XD'
+				valeur <- valeur - D3
+			SINON
+				SI (valeur >= D2) ALORS
+					rom <- rom + 'LD'
+					valeur <- valeur - D2
+				SINON
+					SI (valeur >= D1) ALORS
+						rom <- rom + 'CD'
+						valeur <- valeur - D1
+					FIN SI
+				FIN SI
+			FIN SI
+		FIN SI
+	FIN SI
+
+	
+	// traitement des centaines
+	TANT QUE (valeur >= C)
+		rom <- rom + 'C'
+		valeur <- valeur - C
+	FIN TANT QUE
+
+	// traitement des soustractions avant les centaines
+	SI (valeur >= C3) ALORS  
+		rom <- rom + 'IC'
+		valeur <- valeur - C3
+	SINON
+		SI (valeur >= C2) ALORS
+			rom <- rom + 'VC'
+			valeur <- valeur - C2
+		SINON
+			SI (valeur >= C1) ALORS
+				rom <- rom + 'XC'
+				valeur <- valeur - C1
+			FIN SI
+		FIN SI
+	FIN SI
+
+
+	// traitement de la cinquantaine
+	SI (valeur >= L) ALORS 
+		rom <- rom + 'L'
+		valeur <- valeur - L
+	FIN SI
+
+	// traitement des soustractions avant la cinquantaine
+	SI (valeur >= L3) ALORS 
+		rom <- rom + 'IL'
+		valeur <- valeur - L3
+	SINON
+		SI (valeur >= L2) ALORS
+			rom <- rom + 'VL'
+			valeur <- valeur - L2
+		SINON
+			SI (valeur >= L1) ALORS
+				rom <- rom + 'XL'
+				valeur <- valeur - L1
+			FIN SI
+		FIN SI
+	FIN SI
+
+
+	// traitement des dizaines
+	TANT QUE (valeur >= X)
+		rom <- rom + 'X'
+		valeur <- valeur - X
+	FIN TANT QUE
+
+	// traitement des soustractions avant les dizaines
+	SI (valeur >= X1) ALORS
+		rom <- rom + 'IX'
+		valeur <- valeur - X1
+	FIN SI
+
+
+	// traitement pour le 5
+	SI (valeur >= V) ALORS 
+		rom <- rom + 'V'
+		valeur <- valeur - V
+	FIN SI
+
+	// traitement de la soustraction avant le 5
+	SI (valeur >= V1) ALORS
+		rom <- rom + 'IV'
+		valeur <- valeur - V1
+	FIN SI
+
+
+	// traitement des unités
+	TANT QUE (valeur >= I)
+		rom <- rom + 'I
+		valeur <- valeur - I
+	FIN TANT QUE
+
+
+	// affichage
+	ECRIRE 'Le chiffre romain de votre valeur est : ', rom
+
+FIN SI
+
+
+
+
+
+// chiffre romain -> chiffre décimal
+SI (menu = 2) ALORS
+	
+	// boucle de saisie : l'utilisateur ne pourra pas écrire une valeur invalide !
+	REPETER
+		ECRIRE 'Veuillez saisir un chiffre romain :'
+		LIRE rom
+	JUSQU'A (LONGUEUR(rom) <= MAXCAR) ET (LONGUEUR(rom) >= MIN) ET (verifRomain(rom))
+	//la longueur maximale que peut avoir un chiffre romain < 3999 est de 21 caractères
+
+
+	// boucle du traitement principal
+	POUR cpt DE MIN A LONGUEUR(rom) FAIRE
+
+		// traitement du M
+		SI (EXTRACTION(rom, cpt) = 'M') ALORS
+			valeur <- valeur + M
+		FIN SI
+
+
+		// traitement du D
+		SI (EXTRACTION(rom, cpt) = 'D') ALORS
+			valeur <- valeur + D
+		FIN SI
+
+
+		// traitement du C
+		SI (EXTRACTION(rom, cpt) = 'C') ALORS
+			SI (EXTRACTION(rom, cpt+MIN) = 'M') ALORS
+				valeur <- valeur + M1
+				cpt <- cpt + MIN
+			SINON
+				SI (EXTRACTION(rom, cpt+MIN) = 'D') ALORS
+					valeur <- valeur + D1
+					cpt <- cpt + MIN
+				SINON
+					valeur <- valeur + C
+				FIN SI
+			FIN SI
+		FIN SI
+
+
+		// traitement du L
+		SI (EXTRACTION(rom, cpt) = 'L') ALORS
+			SI (EXTRACTION(rom, cpt+MIN) = 'M') ALORS
+				valeur <- valeur + M2
+				cpt <- cpt + MIN
+			SINON
+				SI (EXTRACTION(rom, cpt+MIN) = 'D') ALORS
+					valeur <- valeur + D2
+					cpt <- cpt + MIN
+				SINON
+					valeur <- valeur + L
+				FIN SI
+			FIN SI
+		FIN SI
+
+
+		// traitement du X
+		SI (EXTRACTION(rom, cpt) = 'X') ALORS
+			SI (EXTRACTION(rom, cpt+MIN) = 'M') ALORS
+				valeur <- valeur + M3
+				cpt <- cpt + MIN
+			SINON
+				SI (EXTRACTION(rom, cpt+MIN) = 'D') ALORS
+					valeur <- valeur + D3
+					cpt <- cpt + MIN
+				SINON
+					SI (EXTRACTION(rom, cpt+MIN) = 'C') ALORS
+						valeur <- valeur + C1
+						cpt <- cpt + MIN
+					SINON
+						SI (EXTRACTION(rom, cpt+MIN) = 'L') ALORS
+							valeur <- valeur + L1
+							cpt <- cpt + MIN
+						SINON
+							valeur <- valeur + X
+						FIN SI
+					FIN SI
+				FIN SI
+			FIN SI
+		FIN SI
+
+
+		// traitement du V
+		SI (EXTRACTION(rom, cpt) = 'V') ALORS
+			SI (EXTRACTION(rom, cpt+MIN) = 'M') ALORS
+				valeur <- valeur + M4
+				cpt <- cpt + MIN
+			SINON
+				SI (EXTRACTION(rom, cpt+MIN) = 'D') ALORS
+					valeur <- valeur + D4
+					cpt <- cpt + MIN
+				SINON
+					SI (EXTRACTION(rom, cpt+MIN) = 'C') ALORS
+						valeur <- valeur + C2
+						cpt <- cpt + MIN
+					SINON
+						SI (EXTRACTION(rom, cpt+MIN) = 'L') ALORS
+							valeur <- valeur + L2
+							cpt <- cpt + MIN
+						SINON
+							valeur <- valeur + V
+						FIN SI
+					FIN SI
+				FIN SI
+			FIN SI
+		FIN SI
+
+
+		// traitement du I
+		SI (EXTRACTION(rom, cpt) = 'I') ALORS
+			SI (EXTRACTION(rom, cpt+MIN) = 'M') ALORS
+				valeur <- valeur + M5
+				cpt <- cpt + MIN
+			SINON
+				SI (EXTRACTION(rom, cpt+MIN) = 'D') ALORS
+					valeur <- valeur + D5
+					cpt <- cpt + MIN
+				SINON
+					SI (EXTRACTION(rom, cpt+MIN) = 'C') ALORS
+						valeur <- valeur + C3
+						cpt <- cpt + MIN
+					SINON
+						SI (EXTRACTION(rom, cpt+MIN) = 'L') ALORS
+							valeur <- valeur + L3
+							cpt <- cpt + MIN
+						SINON
+							SI (EXTRACTION(rom, cpt+MIN) = 'X') ALORS
+								valeur <- valeur + X1
+								cpt <- cpt + MIN
+							SINON
+								SI (EXTRACTION(rom, cpt+MIN) = 'V') ALORS
+									valeur <- valeur + V1
+									cpt <- cpt + MIN
+								SINON
+									valeur <- valeur + I
+								FIN SI
+							FIN SI
+						FIN SI
+					FIN SI
+				FIN SI
+			FIN SI
+		FIN SI
+
+	FIN POUR
+
+	// affichage
+	ECRIRE 'La valeur entière de votre chiffre romain est : ', valeur
+
+FIN SI
+
+FIN.
+
+
