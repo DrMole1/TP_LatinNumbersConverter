@@ -91,14 +91,14 @@ SI (menu = 1) ALORS
 		SI ((valeur < MIN) OU (valeur > MAX)) ALORS
 			ECRIRE 'Votre valeur doit etre comprise entre 1 et 3999'
 		FIN SI
-	JUSQU'A ((valeur >= MIN) ET (valeur <= MAX))
+	JUSQU'A ((valeur >= MIN) ET (valeur <= MAX))                                                             //$ Jeu d'essai : l'utilisateur saisit 1666
 
 
 	// traitement des milliers 
 	// on utilise une boucle TANT QUE car nous ne sommes pas obligé de passer ici (si valeur = 766 et 766 < 1000)
-	TANT QUE (valeur >= M)
-		rom <- rom + 'M'   // on concatène la chaine
-		valeur <- valeur - M  // on soustrait la valeur saisie par son représentant en chiffre romain
+	TANT QUE (valeur >= M)                                                                                   //$ On passe dans la boucle, car 1666 >= 1000
+		rom <- rom + 'M'   // on concatène la chaine                                                         //$ Rom = "M"
+		valeur <- valeur - M  // on soustrait la valeur saisie par son représentant en chiffre romain        //$ valeur = 666
 	FIN TANT QUE
 
 	// traitement des soustractions avant les milliers
@@ -129,9 +129,9 @@ SI (menu = 1) ALORS
 
 
 	// traitement du 500
-	SI (valeur >= D) ALORS  
-		rom <- rom + 'D'
-		valeur <- valeur - D
+	SI (valeur >= D) ALORS                                                             //$ valeur = 666 et valeur >= 500 donc on passe dans cette alternative
+		rom <- rom + 'D'                                                               //$ rom = "MD"
+		valeur <- valeur - D                                                           //$ valeur = 166
 	FIN SI
 
 	// traitement des soustractions avant le 500
@@ -161,10 +161,10 @@ SI (menu = 1) ALORS
 	FIN SI
 
 	
-	// traitement des centaines
-	TANT QUE (valeur >= C)
-		rom <- rom + 'C'
-		valeur <- valeur - C
+	// traitement des centaines 
+	TANT QUE (valeur >= C)                                                       //$ valeur = 166 et valeur >= 100 donc on passe dans cette boucle
+		rom <- rom + 'C'                                                         //$ rom = "MDC"
+		valeur <- valeur - C                                                     //$ valeur = 66
 	FIN TANT QUE
 
 	// traitement des soustractions avant les centaines
@@ -185,9 +185,9 @@ SI (menu = 1) ALORS
 
 
 	// traitement de la cinquantaine
-	SI (valeur >= L) ALORS 
-		rom <- rom + 'L'
-		valeur <- valeur - L
+	SI (valeur >= L) ALORS                                                      //$ valeur = 66 et valeur >= 50 donc on passe dans cette alternative
+		rom <- rom + 'L'                                                        //$ rom = "MDCL"
+		valeur <- valeur - L                                                    //$ valeur = 16
 	FIN SI
 
 	// traitement des soustractions avant la cinquantaine
@@ -208,9 +208,9 @@ SI (menu = 1) ALORS
 
 
 	// traitement des dizaines
-	TANT QUE (valeur >= X)
-		rom <- rom + 'X'
-		valeur <- valeur - X
+	TANT QUE (valeur >= X)                                                     //$ valeur = 16 et valeur >= 10 donc on passe dans cette boucle
+		rom <- rom + 'X'                                                       //$ rom = "MDCLX"
+		valeur <- valeur - X                                                   //$ valeur = 6
 	FIN TANT QUE
 
 	// traitement des soustractions avant les dizaines
@@ -221,9 +221,9 @@ SI (menu = 1) ALORS
 
 
 	// traitement pour le 5
-	SI (valeur >= V) ALORS 
-		rom <- rom + 'V'
-		valeur <- valeur - V
+	SI (valeur >= V) ALORS                                                     //$ valeur = 6 et valeur >= 5 donc on passe dans cette alternative
+		rom <- rom + 'V'                                                       //$ rom = "MDCLXV" 
+		valeur <- valeur - V                                                   //$ valeur = 1
 	FIN SI
 
 	// traitement de la soustraction avant le 5
@@ -234,14 +234,14 @@ SI (menu = 1) ALORS
 
 
 	// traitement des unités
-	TANT QUE (valeur >= I)
-		rom <- rom + 'I
-		valeur <- valeur - I
+	TANT QUE (valeur >= I)                                                     //$ valeur = 1 et valeur >= 1 donc on passe dans cette boucle
+		rom <- rom + 'I                                                        //$ rom = "MDCLXVI" 
+		valeur <- valeur - I                                                   //$ valeur = 0
 	FIN TANT QUE
 
 
 	// affichage
-	ECRIRE 'Le chiffre romain de votre valeur est : ', rom
+	ECRIRE 'Le chiffre romain de votre valeur est : ', rom                     //$ on affiche rom = "MDCLXVI"
 
 FIN SI
 
@@ -256,7 +256,7 @@ SI (menu = 2) ALORS
 	REPETER
 		ECRIRE 'Veuillez saisir un chiffre romain :'
 		LIRE rom
-	JUSQU'A (LONGUEUR(rom) <= MAXCAR) ET (LONGUEUR(rom) >= MIN) ET (verifRomain(rom))
+	JUSQU'A (LONGUEUR(rom) <= MAXCAR) ET (LONGUEUR(rom) >= MIN) ET (verifRomain(rom))          //$ Jeu d'essaie : l'utilisateur saisit "MDLCXVI"
 	//la longueur maximale que peut avoir un chiffre romain < 3999 est de 21 caractères
 
 
@@ -264,19 +264,19 @@ SI (menu = 2) ALORS
 	POUR cpt DE MIN A LONGUEUR(rom) FAIRE
 
 		// traitement du M
-		SI (EXTRACTION(rom, cpt) = 'M') ALORS
-			valeur <- valeur + M
+		SI (EXTRACTION(rom, cpt) = 'M') ALORS                                                  //$ EXTRACTION("MDLCXVI,1" = 'M') alors on passe dans ce traitement
+			valeur <- valeur + M                                                               //$ valeur = 1000
 		FIN SI
 
 
 		// traitement du D
-		SI (EXTRACTION(rom, cpt) = 'D') ALORS
-			valeur <- valeur + D
+		SI (EXTRACTION(rom, cpt) = 'D') ALORS                                              //$ EXTRACTION("MDLCXVI,2" = 'D') alors on passe dans ce traitement
+			valeur <- valeur + D                                                           //$ valeur = 1500
 		FIN SI
 
 
 		// traitement du C
-		SI (EXTRACTION(rom, cpt) = 'C') ALORS
+		SI (EXTRACTION(rom, cpt) = 'C') ALORS                                              //$ EXTRACTION("MDLCXVI,3" = 'C') alors on passe dans ce traitement
 			SI (EXTRACTION(rom, cpt+MIN) = 'M') ALORS
 				valeur <- valeur + M1
 				cpt <- cpt + MIN
@@ -285,14 +285,14 @@ SI (menu = 2) ALORS
 					valeur <- valeur + D1
 					cpt <- cpt + MIN
 				SINON
-					valeur <- valeur + C
+					valeur <- valeur + C                                                   //$ valeur = 1600
 				FIN SI
 			FIN SI
 		FIN SI
 
 
 		// traitement du L
-		SI (EXTRACTION(rom, cpt) = 'L') ALORS
+		SI (EXTRACTION(rom, cpt) = 'L') ALORS                                              //$ EXTRACTION("MDLCXVI,4" = 'L') alors on passe dans ce traitement
 			SI (EXTRACTION(rom, cpt+MIN) = 'M') ALORS
 				valeur <- valeur + M2
 				cpt <- cpt + MIN
@@ -301,14 +301,14 @@ SI (menu = 2) ALORS
 					valeur <- valeur + D2
 					cpt <- cpt + MIN
 				SINON
-					valeur <- valeur + L
+					valeur <- valeur + L                                                   //$ valeur = 1650
 				FIN SI
 			FIN SI
 		FIN SI
 
 
 		// traitement du X
-		SI (EXTRACTION(rom, cpt) = 'X') ALORS
+		SI (EXTRACTION(rom, cpt) = 'X') ALORS                                              //$ EXTRACTION("MDLCXVI,5" = 'X') alors on passe dans ce traitement
 			SI (EXTRACTION(rom, cpt+MIN) = 'M') ALORS
 				valeur <- valeur + M3
 				cpt <- cpt + MIN
@@ -325,7 +325,7 @@ SI (menu = 2) ALORS
 							valeur <- valeur + L1
 							cpt <- cpt + MIN
 						SINON
-							valeur <- valeur + X
+							valeur <- valeur + X                                           //$ valeur = 1660
 						FIN SI
 					FIN SI
 				FIN SI
@@ -334,7 +334,7 @@ SI (menu = 2) ALORS
 
 
 		// traitement du V
-		SI (EXTRACTION(rom, cpt) = 'V') ALORS
+		SI (EXTRACTION(rom, cpt) = 'V') ALORS                                              //$ EXTRACTION("MDLCXVI,6" = 'V') alors on passe dans ce traitement
 			SI (EXTRACTION(rom, cpt+MIN) = 'M') ALORS
 				valeur <- valeur + M4
 				cpt <- cpt + MIN
@@ -351,7 +351,7 @@ SI (menu = 2) ALORS
 							valeur <- valeur + L2
 							cpt <- cpt + MIN
 						SINON
-							valeur <- valeur + V
+							valeur <- valeur + V                                           //$ valeur = 1665
 						FIN SI
 					FIN SI
 				FIN SI
@@ -360,7 +360,7 @@ SI (menu = 2) ALORS
 
 
 		// traitement du I
-		SI (EXTRACTION(rom, cpt) = 'I') ALORS
+		SI (EXTRACTION(rom, cpt) = 'I') ALORS                                              //$ EXTRACTION("MDLCXVI,7" = 'I') alors on passe dans ce traitement
 			SI (EXTRACTION(rom, cpt+MIN) = 'M') ALORS
 				valeur <- valeur + M5
 				cpt <- cpt + MIN
@@ -385,7 +385,7 @@ SI (menu = 2) ALORS
 									valeur <- valeur + V1
 									cpt <- cpt + MIN
 								SINON
-									valeur <- valeur + I
+									valeur <- valeur + I                              //$ valeur = 1666
 								FIN SI
 							FIN SI
 						FIN SI
@@ -397,7 +397,7 @@ SI (menu = 2) ALORS
 	FIN POUR
 
 	// affichage
-	ECRIRE 'La valeur entière de votre chiffre romain est : ', valeur
+	ECRIRE 'La valeur entière de votre chiffre romain est : ', valeur                //$ on affiche valeur = 1666
 
 FIN SI
 
